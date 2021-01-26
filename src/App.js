@@ -1,28 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+// import './App.css';
 import React, { Component } from 'react'
+import Car from './Car/Car'
 
-// eslint-disable-next-line no-undef
 class App extends Component {
   render(){
+    const divStyle = {
+      'textAlign' : 'center'
+    }
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js1315</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div style={Object.assign(divStyle, {'color' : 'red'})}>
+        <h1>hello world</h1>
+        <Car name={'Ford'} year={201812}/>
+        <Car name={'Audi'} year={2015}/>
       </div>
-    );
+    )
   }
 
 }
