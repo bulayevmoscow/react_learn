@@ -1,40 +1,66 @@
-// import React, { Component } from 'react'
-
 import React from 'react'
-// import Radium from 'radium'
-import './Button.css'
+import Radium from 'radium'
+import classes from './Car.css'
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default props => {
+class Car extends React.Component {
 
-  const inputClasses = ['input']
-
-  if (props.name !== '') {
-    inputClasses.push('green')
-  } else {
-    inputClasses.push('red')
-  }
-  (props.name.length > 5 && inputClasses.push('bold'))
-
-  const style = {
-    border: '1px solid #ccc',
-    margin: '10px',
-    display: 'inline-block',
-    padding: '10px',
-    boxShadow: '0 4px 5px 0 rgba(0, 0, 0, .14)',
-    borderRadius: '5px'
+  componentWillReceiveProps (nextProps, nextContext) {
+    console.log('1 App componentWillReceiveProps', nextProps)
   }
 
-  return (
-    <div className={'Car'} style={style}>
-      <h3>Car name: {props.name}</h3>
-      <h3>Car year: {props.year}</h3>
-      <input type="text"
-             placeholder={props.name}
-             onChange={props.onChangeName}
-             className={inputClasses.join(' ')}
-      />
-      <button onClick={props.onDelete}>Delete</button>
-    </div>
-  )
+  shouldComponentUpdate (nextProps, nextState, nextContext) {
+    console.log('2 App shouldComponentUpdate', nextProps, nextState)
+    return ((nextProps.name.trim() !== this.props.name.trim()))
+
+
+
+  }
+  componentWillUpdate (nextProps, nextState, nextContext) {
+    console.log('3 App componentWillUpdate', nextProps, nextState)
+  }
+
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    console.log('4 App componentDidUpdate', prevProps, prevState, snapshot)
+  }
+
+  render () {
+    console.log('5 App Render')
+    const inputClasses = [classes.input]
+
+    if (this.props.name !== '') {
+      inputClasses.push(classes.green)
+    } else {
+      inputClasses.push(classes.red)
+    }
+
+    if (this.props.name.length > 4) {
+      inputClasses.push(classes.bold)
+    }
+
+    const style = {
+      border: '1px solid #ccc',
+      boxShadow: '0 4px 5px 0 rgba(0, 0, 0, .14)',
+      ':hover': {
+        border: '1px solid #aaa',
+        boxShadow: '0 4px 15px 0 rgba(0, 0, 0, .25)',
+        cursor: 'pointer'
+      }
+    }
+
+    return (
+      <div className={classes.Car} style={style}>
+        <h3>Сar name: {this.props.name}</h3>
+        <p>Year: <strong>{this.props.year}</strong></p>
+        <input
+          type="text"
+          onChange={this.props.onChangeName}
+          value={this.props.name}
+          className={inputClasses.join(' ')}
+        />
+        <button onClick={this.props.onDelete}>Delete</button>
+      </div>
+    )
+  }
 }
+
+export default Car
