@@ -1,29 +1,26 @@
-// import './App.css';
 import React, { Component } from 'react'
+import './App.css'
 import Car from './Car/Car'
 
 class App extends Component {
+
   state = {
     cars: [
-      { name: 'Ford', year: '2012' },
-      { name: 'Audi', year: '2011' },
-      { name: 'BMW', year: '2015' }
+      { name: 'Ford', year: 2018 },
+      { name: 'Audi', year: 2016 },
+      { name: 'Mazda', year: 2010 }
     ],
-    pageTitle: 'React Components',
+    pageTitle: 'React components',
     showCars: true
   }
-  showCars = () => {
-    console.log('Changed')
+
+  toggleCarsHandler = () => {
     this.setState({
       showCars: !this.state.showCars
     })
   }
-  ChangeTitle = (newTitle) => {
-    this.setState({
-      pageTitle: newTitle
-    })
-  }
-  ChangeName = (name, index) => {
+
+  onChangeName (name, index) {
     const car = this.state.cars[index]
     car.name = name
     const cars = [...this.state.cars]
@@ -31,47 +28,60 @@ class App extends Component {
     this.setState({ cars })
   }
 
-  deleteHandler = (index) => {
-    const cars = this.state.cars.concat();
+  deleteHandler (index) {
+    const cars = this.state.cars.concat()
     cars.splice(index, 1)
 
-    this.setState({
-      cars: cars
-    })
+    this.setState({ cars })
+
   }
 
   render () {
-    console.log(this, 1)
-    let a = () => console.log(this, 2)
-    a()
-    function b () {
-      console.log(this,3)
+    console.clear()
+    const divStyle = {
+      textAlign: 'center'
     }
-    b()
+
+    let cars = null
+
+    if (this.state.showCars) {
+      cars = this.state.cars.map((car, index) => {
+        return (
+          <Car
+            key={index}
+            name={car.name}
+            year={car.year}
+            onDelete={this.deleteHandler.bind(this, index)}
+            onChangeName={event => this.onChangeName(event.target.value, index)}
+          />
+        )
+      })
+    }
+
     return (
-      <div>
+      <div style={divStyle}>
         <h1>{this.state.pageTitle}</h1>
-        <button onClick={this.showCars}>Toggle Cars</button>
-        <h1>{this.state.showCars.toString()}</h1>
 
-        {this.state.showCars ?
-          this.state.cars.map((car, index) => {
-            return (
-              <div key={index}>
-                <Car
-                  name={car.name}
-                  year={car.year}
-                  onDelete={this.deleteHandler}
-                  onChangeName={event => this.ChangeName(event.target.value, index)}
-                />
-              </div>
-            )
-          }) : null}
+        <button
+          onClick={this.toggleCarsHandler}
+        >Toggle cars
+        </button>
 
+        <div style={{
+          width: 400,
+          margin: 'auto',
+          paddingTop: '20px'
+        }}>
+          <div style={{
+            width: 400,
+            margin: 'auto',
+            paddingTop: '20px'
+          }}> {cars} </div>
+
+        </div>
       </div>
     )
   }
-
 }
 
 export default App
