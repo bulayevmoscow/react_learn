@@ -1,0 +1,18 @@
+.input {
+
+}
+
+.input:active{
+    outline: none;
+}
+
+.input.green {
+    border: 1px solid green;
+}
+.input.red {
+    border: 1px solid red;
+}
+
+.input.bold{
+    font-weight: bolder;
+}
