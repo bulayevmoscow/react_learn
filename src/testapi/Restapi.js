@@ -3,104 +3,101 @@ import React from 'react'
 export default class Restapi extends React.Component {
   constructor () {
     super()
-    this.state = {
-      hi: 'hello world!',
-      data: null,
-      json: null,
-      loadData: false,
-    }
-    if (this.state.loadData === true){
-      this.posts = new Promise((resolve, reject) => {
-          fetch('https://jsonplaceholder.typicode.com/posts')
-            .then(res => {
-              if (res.ok)
-                resolve(res.json())
-              else
-                reject('Error download posts')
-            })
-        }
-      )
-      this.users = new Promise((resolve, reject) => {
-          fetch('https://jsonplaceholder.typicode.com/users')
-            .then(res => {
-              if (res.ok)
-                resolve(res.json())
-              else
-                reject('Error download users')
-            })
-        }
-      )
-    }
   }
 
-  // alertHi () {
-  //   console.log('get data!')
-  //   fetch('https://jsonplaceholder.typicode.com/posts')
-  //     .then(res => {
-  //       if (!res.ok)
-  //         throw 'Error Connect'
-  //       console.log(res)
-  //       return res.json()
-  //     })
-  //     .then(json => {
-  //       this.RenderAnwser(json)
-  //       console.log(json)
-  //       this.setState({
-  //           hi: 'Data was loaded',
-  //           json
-  //         },
-  //       )
-  //     }).catch(x => {
-  //     this.setState({
-  //       hi: x
-  //     })
-  //   })
-  //   // this.posts()
-  // }
+  state = {
+    data: null,
+    userPosts: null
+  }
 
-  // RenderAnwser (props) {
-  //   if (!this.state.json)
-  //     return null
-  //   return this.state.json.map((item, key) => {
-  //     return (
-  //       <div key={key} style={{ width: '400px', border: '1px solid red', margin: '10px' }}>
-  //         <h1>Created by {item.userId}</h1>
-  //         <h4>{item.title}</h4>
-  //         <p>{item.body}</p>
-  //       </div>
-  //     )
-  //   })
-  // }
-
-
+  async Texts () {
+    let a = 0
+    await setTimeout(() => {
+      a = 50
+      console.log(a)
+    }, 1000)
+    return ('hi')
+  }
 
   render () {
-    if (this.state.loadData){
-      Promise.allSettled([this.posts, this.users])
-        .then((x) => console.log(x, 1))
-        .catch(err => console.log(err))
+    const url = 'https://jsonplaceholder.typicode.com/todos'
+
+    const delay = ms => {
+      return new Promise(r => setTimeout(() => r(), ms))
     }
 
+    async function fetchTodo () {
+      if (this.state.data !== null) {
+        this.setState({ data: null })
+        return null
+      }
+      console.log('Start Fetch')
+      return await delay(1)
+        .then(() => fetch(url))
+        .then((res) => res.json())
+        .then(res => this.setState({ data: res }))
+    }
 
+    async function fetchTodoUser (userId) {
+      return await fetch(url)
+        .then(res => res.json())
+        .then(json => {
+          let userPosts = json.filter(item => item.userId === userId)
+          this.setState({ userPosts })
+          console.log(this.state)
+        })
+    }
+
+    let dataRender, dataUserRender = null
+
+    if (this.state.data != null) {
+      dataRender = this.state.data.map((item, key) => {
+        return (
+          <div key={key} style={{ border: '1px solid green', margin: '5px' }}>
+            <p>Created by {item.userId}</p>
+            <h4>
+              {item.title}
+              <br/>
+              <small>
+                {item.id}
+              </small>
+            </h4>
+            <button onClick={fetchTodoUser.bind(this, item.userId)}>All posts this user</button>
+          </div>
+        )
+      })
+    }
+
+    if (this.state.userPosts != null) {
+      dataUserRender = this.state.userPosts.map((item, key) => {
+        return (
+          <div key={key} style={{ border: '1px solid red', margin: '5px' }}>
+            <h4>
+              {item.title}
+              <br/>
+              <small>
+                №{item.id}
+              </small>
+            </h4>
+            <p>This posts was created by {item.userId}</p>
+          </div>
+        )
+      })
+    }
 
     return (
-      <div style={{
-        border: '1px solid green'
-      }}>
-        <div>
-          {/*{this.state.json && this.RenderAnwser()}*/}
+      <div>
+        <pre>{JSON.stringify(this.state.userPosts)}</pre>
+        <h1>Here was async</h1>
+        <button onClick={fetchTodo.bind(this)}>Get Data</button>
+        <div style={{display: 'flex'}}>
+          <div style={{ width: '30%' }}>{dataRender}</div>
+          <div style={{ width: '30%' }}>{dataUserRender}</div>
         </div>
-        {/*<button onClick={this.alertHi.bind(this)}>Change</button>*/}
-        <h1> {this.state.hi}</h1>
 
-        <div>
-          <h1>Another try</h1>
-          <button onClick={()=>{this.setState({loadData: !this.state.loadData})}}>Load Data</button>
-          <button>Show users</button>
-          <button>Show posts</button>
-        </div>
 
       </div>
+
     )
   }
 }
