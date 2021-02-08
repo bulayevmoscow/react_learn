@@ -4,6 +4,9 @@ export default class Restapi extends React.Component {
   constructor () {
     super()
   }
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    console.log('component did updated')
+  }
 
   state = {
     data: null,
@@ -87,7 +90,9 @@ export default class Restapi extends React.Component {
 
     return (
       <div>
-        <pre>{JSON.stringify(this.state.userPosts)}</pre>
+        <pre style={{
+          display:'none'
+        }}>{JSON.stringify(this.state.userPosts)}</pre>
         <h1>Here was async</h1>
         <button onClick={fetchTodo.bind(this)}>Get Data</button>
         <div style={{display: 'flex'}}>
