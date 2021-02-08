@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './App.scss'
 import Car from './Car/Car'
+import Counter from './Counter/Counter'
 
 class App extends Component {
 
@@ -77,6 +78,9 @@ class App extends Component {
           paddingTop: '20px'
         }}>
           { cars }
+        </div>
+        <div>
+          <Counter/>
         </div>
       </div>
     );
