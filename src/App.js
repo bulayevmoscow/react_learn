@@ -3,6 +3,7 @@ import './App.scss'
 import Car from './Car/Car'
 import Counter from './Counter/Counter'
 
+
 class App extends Component {
 
   constructor(props) {
@@ -15,7 +16,7 @@ class App extends Component {
         // {name: 'Mazda', year: 2010}
       ],
       pageTitle: 'React components',
-      showCars: false
+      showCars: true
     }
   }
 
@@ -63,6 +64,7 @@ class App extends Component {
     }
 
     return (
+
       <div style={divStyle}>
         {/*<h1>{this.state.pageTitle}</h1>*/}
         <h1>{this.props.title}</h1>
